@@ -1,0 +1,21 @@
+# Whether to show the prefix in the messages
+showPrefix: true
+# The maximum TPS that can be set, if there is no lower value set via permission (tps.set.[VALUE])
+maxTps: 120
+# Whether to broadcast the tps changes to all players
+broadcastChanges: true
+# If broadcastChanges is false, the player executing the command will see this string instead of their name.
+yourselfString: "Yourself"
+
+messages:
+  prefix: "&8[&6TPS&8] &7"
+  # Following placeholders possible: %5s%, %10s%, %1m%, %5m%. %15m%
+  tps: "TPS from last 5s: %5s%, last 10s: %10s%, last 1m: %1m%."
+  tpsSet: "The tps have been set to %tps% by %player%."
+  tpsReset: "The tps have been reset to the default value by %player%."
+  tpsFreeze: "The tps have been frozen by %player%."
+  tpsUnfreeze: "The tps have been unfrozen by %player%."
+  tpsAlreadyFrozen: "The tps are already frozen."
+  tpsAlreadyUnfrozen: "The tps are already unfrozen."
+  tpsAboveValid: "The desired tps are above the limit of: %max%"
+  reload: "The configuration has been reloaded."
