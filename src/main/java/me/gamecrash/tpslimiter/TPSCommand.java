@@ -96,7 +96,7 @@ public class TPSCommand {
                                     } else {
                                         ctx.getSource().getSender().sendMessage(
                                                 returnFormatted(MessageHelper.getMessage("messages.tpsSet", plugin),
-                                                        plugin.getConfig().getString("yourselfString")).replace("%max%", String.valueOf(maxTps))
+                                                        plugin.getConfig().getString("yourselfString")).replace("%tps%", String.valueOf(newTps))
                                         );
                                     }
                                     return Command.SINGLE_SUCCESS;
