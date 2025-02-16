@@ -15,8 +15,15 @@ permissions:
     default: false
     children:
       tps.set.*:
-        description: Binds the maximum tps value to the specified integer. There will be no limit, if this isnt set or it has * as value.
+        description: Binds the maximum tps value to the specified integer. There will only be the limit specified in the config, if this isnt set or it has * as value.
         default: false
+    tps.step:
+      description: Allows the player to step a specified amount of tps forward.
+      default: false
+      children:
+        tps.step.*:
+          description: Binds the maximum step value to the specified integer. There will only be the limit specified in the config, if this isnt set or it has * as value.
+          default: false
   tps.freeze:
     description: Allows the player to freeze the tps.
     default: false

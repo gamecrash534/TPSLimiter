@@ -1,6 +1,7 @@
 package me.gamecrash.tpslimiter;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -84,7 +85,7 @@ public class TPSCommand {
                         .then(Commands.argument("tps", LongArgumentType.longArg(0))
                                 .executes(ctx -> {
                                     long newTps = LongArgumentType.getLong(ctx, "tps");
-                                    long maxTps = getMaxTickPerm(ctx.getSource().getSender(), plugin);
+                                    long maxTps = getMaxTickPerm(ctx.getSource().getSender(), "tps.set.", plugin);
                                     if (newTps > maxTps) {
                                         ctx.getSource().getSender().sendMessage(MessageHelper.getMessage("messages.tpsAboveValid", plugin)
                                                 .replace("%max%", String.valueOf(maxTps)));
@@ -120,6 +121,36 @@ public class TPSCommand {
                             }
                             return Command.SINGLE_SUCCESS;
                         })
+                )
+                .then(Commands.literal("step")
+                        .requires(sender -> sender.getSender().hasPermission("tps.step"))
+                        .then(Commands.argument("tick", IntegerArgumentType.integer(0))
+                                .executes(ctx -> {
+                                    int newTps = IntegerArgumentType.getInteger(ctx, "tick");
+                                    long maxTps = getMaxTickPerm(ctx.getSource().getSender(), "tps.step.", plugin);
+                                    if (newTps > maxTps) {
+                                        ctx.getSource().getSender().sendMessage(MessageHelper.getMessage("messages.tpsAboveValid", plugin)
+                                                .replace("%max%", String.valueOf(maxTps)));
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    if (!Bukkit.getServerTickManager().isFrozen()) {
+                                        ctx.getSource().getSender().sendMessage(MessageHelper.getMessage("messages.tpsNotFrozen", plugin));
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    Bukkit.getServerTickManager().stepGameIfFrozen(newTps);
+                                    if (plugin.getConfig().getBoolean("broadcastChanges")) {
+                                        Bukkit.broadcast(LegacyComponentSerializer.legacyAmpersand().deserialize(
+                                                returnFormatted(MessageHelper.getMessage("messages.tpsStep", plugin), ctx.getSource().getSender(), newTps))
+                                        );
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    ctx.getSource().getSender().sendMessage(
+                                            returnFormatted(MessageHelper.getMessage("messages.tpsStep", plugin),
+                                                    plugin.getConfig().getString("yourselfString")).replace("%max%", String.valueOf(maxTps))
+                                    );
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                        )
                 );
                 return tpsBuilder.build();
     }
@@ -142,10 +173,10 @@ public class TPSCommand {
                 .replace("%tps%", String.valueOf(newTps));
     }
 
-    private static long getMaxTickPerm(CommandSender sender, JavaPlugin plugin) {
+    private static long getMaxTickPerm(CommandSender sender, String permPath, JavaPlugin plugin) {
         long max = plugin.getConfig().getLong("maxTps");
         for (String permission : sender.getEffectivePermissions().stream().map(p -> p.getPermission()).toList()) {
-            if (permission.startsWith("tps.set.")) {
+            if (permission.startsWith(permPath)) {
                 String[] parts = permission.split("\\.");
                 if (parts.length != 3) { return max; }
                 if (parts[2].equals("*")) { return max; }
