@@ -79,7 +79,7 @@ public class TPSCommand {
                 )
                 .then(Commands.literal("set")
                         .requires(sender -> sender.getSender().hasPermission("tps.set"))
-                        .then(Commands.argument("tps", LongArgumentType.longArg(0))
+                        .then(Commands.argument("tps", LongArgumentType.longArg(1))
                                 .executes(ctx -> {
                                     long newTps = LongArgumentType.getLong(ctx, "tps");
                                     long maxTps = getMaxTickPerm(ctx.getSource().getSender(), "tps.set.", plugin.getConfig().getLong("maxTps"));
@@ -121,7 +121,7 @@ public class TPSCommand {
                 )
                 .then(Commands.literal("step")
                         .requires(sender -> sender.getSender().hasPermission("tps.step"))
-                        .then(Commands.argument("tick", IntegerArgumentType.integer(0))
+                        .then(Commands.argument("tick", IntegerArgumentType.integer(1))
                                 .executes(ctx -> {
                                     int newTps = IntegerArgumentType.getInteger(ctx, "tick");
                                     long maxTps = getMaxTickPerm(ctx.getSource().getSender(), "tps.step.", plugin.getConfig().getLong("maxStepCount"));
