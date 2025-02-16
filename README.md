@@ -1,4 +1,3 @@
-A fancier way to do /tick on paper-servers
+## A fancier way to do /tick on paper-servers
 
-
-A not-so-fancy way to learn paper plugin development
+Just as the title says. It supports tick (un)freeze, stepping and setting tickrates, while providing custom messages and permissions
