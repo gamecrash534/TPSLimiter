@@ -1,7 +1,8 @@
 # Whether to show the prefix in the messages
 showPrefix: true
-# The maximum TPS that can be set, if there is no lower value set via permission (tps.set.[VALUE])
+# The maximum TPS / Tick-Step-Count that can be set, if there is no lower value set via permission (tps.set.[VALUE])
 maxTps: 120
+maxStepCount: 300
 # Whether to broadcast the tps changes to all players
 broadcastChanges: true
 # If broadcastChanges is false, the player executing the command will see this string instead of their name.

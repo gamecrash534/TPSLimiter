@@ -15,12 +15,9 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ServerTickManager;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.Locale;
 
 public class TPSCommand {
-
     public static LiteralCommandNode<CommandSourceStack> build(TPSLimiter plugin) {
         LiteralArgumentBuilder<CommandSourceStack> tpsBuilder = Commands.literal("tps")
                 .requires(sender -> sender.getSender().hasPermission("tps"))
@@ -85,7 +82,7 @@ public class TPSCommand {
                         .then(Commands.argument("tps", LongArgumentType.longArg(0))
                                 .executes(ctx -> {
                                     long newTps = LongArgumentType.getLong(ctx, "tps");
-                                    long maxTps = getMaxTickPerm(ctx.getSource().getSender(), "tps.set.", plugin);
+                                    long maxTps = getMaxTickPerm(ctx.getSource().getSender(), "tps.set.", plugin.getConfig().getLong("maxTps"));
                                     if (newTps > maxTps) {
                                         ctx.getSource().getSender().sendMessage(MessageHelper.getMessage("messages.tpsAboveValid", plugin)
                                                 .replace("%max%", String.valueOf(maxTps)));
@@ -127,7 +124,7 @@ public class TPSCommand {
                         .then(Commands.argument("tick", IntegerArgumentType.integer(0))
                                 .executes(ctx -> {
                                     int newTps = IntegerArgumentType.getInteger(ctx, "tick");
-                                    long maxTps = getMaxTickPerm(ctx.getSource().getSender(), "tps.step.", plugin);
+                                    long maxTps = getMaxTickPerm(ctx.getSource().getSender(), "tps.step.", plugin.getConfig().getLong("maxStepCount"));
                                     if (newTps > maxTps) {
                                         ctx.getSource().getSender().sendMessage(MessageHelper.getMessage("messages.tpsAboveValid", plugin)
                                                 .replace("%max%", String.valueOf(maxTps)));
@@ -173,8 +170,7 @@ public class TPSCommand {
                 .replace("%tps%", String.valueOf(newTps));
     }
 
-    private static long getMaxTickPerm(CommandSender sender, String permPath, JavaPlugin plugin) {
-        long max = plugin.getConfig().getLong("maxTps");
+    private static long getMaxTickPerm(CommandSender sender, String permPath, long max) {
         for (String permission : sender.getEffectivePermissions().stream().map(p -> p.getPermission()).toList()) {
             if (permission.startsWith(permPath)) {
                 String[] parts = permission.split("\\.");
