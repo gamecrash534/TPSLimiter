@@ -13,7 +13,7 @@ import java.util.Locale;
 
 public class MessageHelper {
     public static String getMessage(String messagePath, JavaPlugin plugin) {
-        Boolean prefix = plugin.getConfig().getBoolean("showPrefix");
+        boolean prefix = plugin.getConfig().getBoolean("showPrefix");
         if (prefix) return returnMiniMessage(plugin.getConfig().getString("messages.prefix") + plugin.getConfig().getString(messagePath));
         return returnMiniMessage(plugin.getConfig().getString(messagePath));
     }

@@ -15,7 +15,9 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ServerTickManager;
 import org.bukkit.command.CommandSender;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
+import static me.gamecrash.tpslimiter.MessageHelper.getMessage;
 import static me.gamecrash.tpslimiter.MessageHelper.returnFormatted;
 
 
@@ -26,6 +28,7 @@ public class TPSCommand {
                 .executes(ctx -> {
                     Spark spark = SparkProvider.get();
                     DoubleStatistic<StatisticWindow.TicksPerSecond> tps = spark.tps();
+                    assert tps != null;
                     ctx.getSource().getSender().sendRichMessage(returnFormatted(MessageHelper.getMessage("messages.tps", plugin), tps));
                     return Command.SINGLE_SUCCESS;
                 })
@@ -154,7 +157,7 @@ public class TPSCommand {
                 return tpsBuilder.build();
     }
     private static long getMaxTickPerm(CommandSender sender, String permPath, long max) {
-        for (String permission : sender.getEffectivePermissions().stream().map(p -> p.getPermission()).toList()) {
+        for (String permission : sender.getEffectivePermissions().stream().map(PermissionAttachmentInfo::getPermission).toList()) {
             if (permission.startsWith(permPath)) {
                 String[] parts = permission.split("\\.");
                 if (parts.length != 3) { return max; }
