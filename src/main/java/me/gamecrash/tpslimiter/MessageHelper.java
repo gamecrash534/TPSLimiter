@@ -13,9 +13,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Locale;
 
 public class MessageHelper {
-    //private static JavaPlugin plugin = (JavaPlugin)Bukkit.getPluginManager().getPlugin("TPSLimiter");
+    private final static JavaPlugin plugin = (JavaPlugin)Bukkit.getPluginManager().getPlugin("TPSLimiter");
 
-    public static String getMessage(String messagePath, JavaPlugin plugin) {
+    public static String getMessage(String messagePath) {
         boolean prefix = plugin.getConfig().getBoolean("showPrefix");
         if (prefix) return returnMiniMessage(plugin.getConfig().getString("messages.prefix") + plugin.getConfig().getString(messagePath));
         return returnMiniMessage(plugin.getConfig().getString(messagePath));
@@ -30,7 +30,7 @@ public class MessageHelper {
         return builder.serialize(component).replaceAll("\\\\<", "<");
     }
 
-    public static String returnFormatted(String unformatted, DoubleStatistic<StatisticWindow.TicksPerSecond> tps, JavaPlugin plugin) {
+    public static String returnFormatted(String unformatted, DoubleStatistic<StatisticWindow.TicksPerSecond> tps) {
         double s5 = tps.poll(StatisticWindow.TicksPerSecond.SECONDS_5);
         double s10 = tps.poll(StatisticWindow.TicksPerSecond.SECONDS_10);
         double m1 = tps.poll(StatisticWindow.TicksPerSecond.MINUTES_1);
@@ -47,11 +47,11 @@ public class MessageHelper {
                 .replace("%5m%", String.format(Locale.US, "%.1f", m5))
                 .replace("%15m%", String.format(Locale.US, "%.1f", m15));
         return unformatted
-                .replace("%5s%", getColorFormattedTps(s5, plugin, highColor, mediumColor, lowColor))
-                .replace("%10s%", getColorFormattedTps(s10, plugin, highColor, mediumColor, lowColor))
-                .replace("%1m%", getColorFormattedTps(m1, plugin, highColor, mediumColor, lowColor))
-                .replace("%5m%", getColorFormattedTps(m5, plugin, highColor, mediumColor, lowColor))
-                .replace("%15m%", getColorFormattedTps(m15, plugin, highColor, mediumColor, lowColor));
+                .replace("%5s%", getColorFormattedTps(s5, highColor, mediumColor, lowColor))
+                .replace("%10s%", getColorFormattedTps(s10, highColor, mediumColor, lowColor))
+                .replace("%1m%", getColorFormattedTps(m1, highColor, mediumColor, lowColor))
+                .replace("%5m%", getColorFormattedTps(m5, highColor, mediumColor, lowColor))
+                .replace("%15m%", getColorFormattedTps(m15, highColor, mediumColor, lowColor));
     }
 
     public static String returnFormatted(String unformatted, CommandSender sender) {
@@ -65,7 +65,7 @@ public class MessageHelper {
                 .replace("%tps%", String.valueOf(newTps));
     }
 
-    private static String getColorFormattedTps(double tps, JavaPlugin plugin, String highColor, String mediumColor, String lowColor) {
+    private static String getColorFormattedTps(double tps, String highColor, String mediumColor, String lowColor) {
         double mediumTps = plugin.getConfig().getDouble("tpsColor.mediumTps");
         double lowTps = plugin.getConfig().getDouble("tpsColor.lowTps");
         if (tps > mediumTps) {

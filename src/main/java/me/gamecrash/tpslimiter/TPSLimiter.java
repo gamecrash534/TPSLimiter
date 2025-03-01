@@ -13,7 +13,7 @@ public final class TPSLimiter extends JavaPlugin {
         saveDefaultConfig();
         config = getConfig();
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
-                commands.registrar().register(TPSCommand.build(this)));
+                commands.registrar().register(TPSCommand.build()));
     }
 
     @Override
