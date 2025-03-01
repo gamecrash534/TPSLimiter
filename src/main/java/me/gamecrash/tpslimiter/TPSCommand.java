@@ -15,7 +15,9 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ServerTickManager;
 import org.bukkit.command.CommandSender;
-import java.util.Locale;
+
+import static me.gamecrash.tpslimiter.MessageHelper.returnFormatted;
+
 
 public class TPSCommand {
     public static LiteralCommandNode<CommandSourceStack> build(TPSLimiter plugin) {
@@ -151,25 +153,6 @@ public class TPSCommand {
                 );
                 return tpsBuilder.build();
     }
-
-    private static String returnFormatted(String unformatted, DoubleStatistic<StatisticWindow.TicksPerSecond> tps) {
-        return unformatted.replace("%5s%", String.format(Locale.US, "%.1f", tps.poll(StatisticWindow.TicksPerSecond.SECONDS_5)))
-                .replace("%10s%", String.format(Locale.US, "%.1f", tps.poll(StatisticWindow.TicksPerSecond.SECONDS_10)))
-                .replace("%1m%", String.format(Locale.US, "%.1f", tps.poll(StatisticWindow.TicksPerSecond.MINUTES_1)))
-                .replace("%5m%", String.format(Locale.US, "%.1f", tps.poll(StatisticWindow.TicksPerSecond.MINUTES_5)))
-                .replace("%15m%", String.format(Locale.US, "%.1f", tps.poll(StatisticWindow.TicksPerSecond.MINUTES_15)));
-    }
-    private static String returnFormatted(String unformatted, CommandSender sender) {
-        return unformatted.replace("%player%", sender.getName());
-    }
-    private static String returnFormatted(String unformatted, String sender) {
-        return unformatted.replace("%player%", sender);
-    }
-    private static String returnFormatted(String unformatted, CommandSender sender, long newTps) {
-        return unformatted.replace("%player%", sender.getName())
-                .replace("%tps%", String.valueOf(newTps));
-    }
-
     private static long getMaxTickPerm(CommandSender sender, String permPath, long max) {
         for (String permission : sender.getEffectivePermissions().stream().map(p -> p.getPermission()).toList()) {
             if (permission.startsWith(permPath)) {

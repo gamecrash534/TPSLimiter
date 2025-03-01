@@ -9,7 +9,7 @@ broadcastChanges: true
 yourselfString: "yourself"
 
 messages:
-  prefix: "&8[&6TPS&8] &7"
+  prefix: "<dark_gray>[<gold>TPS<dark_gray>] <gray>"
   # Following placeholders possible: %5s%, %10s%, %1m%, %5m%. %15m%
   tps: "TPS from last 5s: %5s%, last 10s: %10s%, last 1m: %1m%."
   tpsSet: "The tps have been set to %tps% by %player%."
