@@ -24,7 +24,7 @@ public class MessageHelper {
         MiniMessage builder = MiniMessage.builder().build();
         LegacyComponentSerializer legacy = LegacyComponentSerializer.legacySection();
         Component component = legacy.deserialize(colorFormatted(message));
-        return builder.serialize(component).replaceAll("\\\\", "");
+        return builder.serialize(component).replaceAll("\\\\<", "<");
     }
 
     public static String returnFormatted(String unformatted, DoubleStatistic<StatisticWindow.TicksPerSecond> tps) {
