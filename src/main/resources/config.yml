@@ -8,6 +8,17 @@ broadcastChanges: true
 # If broadcastChanges is false, the player executing the command will see this string instead of their name.
 yourselfString: "yourself"
 
+tpsColor:
+  # Whether to color the TPS output
+  enabled: true
+  # The TPS ranges, at which the colors are applied. Will alway be from higher to lower
+  mediumTps: 17
+  lowTps: 15
+  # The colors for the different TPS ranges
+  highTpsColor: "<green>"
+  mediumTpsColor: "<yellow>"
+  lowTpsColor: "<red>"
+
 messages:
   prefix: "<dark_gray>[<gold>TPS<dark_gray>] <gray>"
   # Following placeholders possible: %5s%, %10s%, %1m%, %5m%. %15m%

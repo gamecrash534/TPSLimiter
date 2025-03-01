@@ -29,7 +29,7 @@ public class TPSCommand {
                     Spark spark = SparkProvider.get();
                     DoubleStatistic<StatisticWindow.TicksPerSecond> tps = spark.tps();
                     assert tps != null;
-                    ctx.getSource().getSender().sendRichMessage(returnFormatted(MessageHelper.getMessage("messages.tps", plugin), tps));
+                    ctx.getSource().getSender().sendRichMessage(returnFormatted(MessageHelper.getMessage("messages.tps", plugin), tps, plugin));
                     return Command.SINGLE_SUCCESS;
                 })
                 .then(Commands.literal("reload")
