@@ -16,7 +16,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ServerTickManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionAttachmentInfo;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import static me.gamecrash.tpslimiter.MessageHelper.returnFormatted;
 
