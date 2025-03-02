@@ -36,9 +36,6 @@ public class MessageHelper {
         double m1 = tps.poll(StatisticWindow.TicksPerSecond.MINUTES_1);
         double m5 = tps.poll(StatisticWindow.TicksPerSecond.MINUTES_5);
         double m15 = tps.poll(StatisticWindow.TicksPerSecond.MINUTES_15);
-        String highColor = plugin.getConfig().getString("tpsColor.highTpsColor");
-        String mediumColor = plugin.getConfig().getString("tpsColor.mediumTpsColor");
-        String lowColor = plugin.getConfig().getString("tpsColor.lowTpsColor");
 
         if (!plugin.getConfig().getBoolean("tpsColor.enabled")) return unformatted
                 .replace("%5s%", String.format(Locale.US, "%.1f", s5))
@@ -47,13 +44,12 @@ public class MessageHelper {
                 .replace("%5m%", String.format(Locale.US, "%.1f", m5))
                 .replace("%15m%", String.format(Locale.US, "%.1f", m15));
         return unformatted
-                .replace("%5s%", getColorFormattedTps(s5, highColor, mediumColor, lowColor))
-                .replace("%10s%", getColorFormattedTps(s10, highColor, mediumColor, lowColor))
-                .replace("%1m%", getColorFormattedTps(m1, highColor, mediumColor, lowColor))
-                .replace("%5m%", getColorFormattedTps(m5, highColor, mediumColor, lowColor))
-                .replace("%15m%", getColorFormattedTps(m15, highColor, mediumColor, lowColor));
+                .replace("%5s%", getColorFormattedTps(s5))
+                .replace("%10s%", getColorFormattedTps(s10))
+                .replace("%1m%", getColorFormattedTps(m1))
+                .replace("%5m%", getColorFormattedTps(m5))
+                .replace("%15m%", getColorFormattedTps(m15));
     }
-
     public static String returnFormatted(String unformatted, CommandSender sender) {
         return unformatted.replace("%player%", sender.getName());
     }
@@ -65,9 +61,12 @@ public class MessageHelper {
                 .replace("%tps%", String.valueOf(newTps));
     }
 
-    private static String getColorFormattedTps(double tps, String highColor, String mediumColor, String lowColor) {
+    private static String getColorFormattedTps(double tps) {
         double mediumTps = plugin.getConfig().getDouble("tpsColor.mediumTps");
         double lowTps = plugin.getConfig().getDouble("tpsColor.lowTps");
+        String highColor = plugin.getConfig().getString("tpsColor.highTpsColor");
+        String mediumColor = plugin.getConfig().getString("tpsColor.mediumTpsColor");
+        String lowColor = plugin.getConfig().getString("tpsColor.lowTpsColor");
         if (tps > mediumTps) {
             return highColor + String.format(Locale.US, "%.1f", tps);
         } else if (tps <= lowTps) {

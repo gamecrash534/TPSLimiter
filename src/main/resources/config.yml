@@ -11,10 +11,10 @@ yourselfString: "yourself"
 tpsColor:
   # Whether to color the TPS output
   enabled: true
-  # The TPS ranges, at which the colors are applied. Will alway be from higher to lower
+  # The TPS ranges, at which the colors are applied. Will always be from higher to lower
   mediumTps: 17
   lowTps: 15
-  # The colors for the different TPS ranges
+  # The colors for the different TPS ranges. Can be a MiniMessage or legacy color tag.
   highTpsColor: "<green>"
   mediumTpsColor: "<yellow>"
   lowTpsColor: "<red>"
