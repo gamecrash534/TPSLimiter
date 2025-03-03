@@ -14,8 +14,6 @@ import me.lucko.spark.api.statistic.types.DoubleStatistic;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ServerTickManager;
-import org.bukkit.command.CommandSender;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import static me.gamecrash.tpslimiter.MessageHelper.returnFormatted;
 
@@ -87,7 +85,7 @@ public class TPSCommand {
                         .then(Commands.argument("tps", LongArgumentType.longArg(1))
                                 .executes(ctx -> {
                                     long newTps = LongArgumentType.getLong(ctx, "tps");
-                                    long maxTps = getMaxTickPerm(ctx.getSource().getSender(), "tps.set.", plugin.getConfig().getLong("maxTps"));
+                                    long maxTps = plugin.permCache.getMax(ctx.getSource().getSender(), false);
                                     if (newTps > maxTps) {
                                         ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsAboveValid")
                                                 .replace("%max%", String.valueOf(maxTps)));
@@ -129,14 +127,14 @@ public class TPSCommand {
                         .then(Commands.argument("tick", IntegerArgumentType.integer(1))
                                 .executes(ctx -> {
                                     int newTps = IntegerArgumentType.getInteger(ctx, "tick");
-                                    long maxTps = getMaxTickPerm(ctx.getSource().getSender(), "tps.step.", plugin.getConfig().getLong("maxStepCount"));
+                                    long maxTps = plugin.permCache.getMax(ctx.getSource().getSender(), true);
+                                    if (!Bukkit.getServerTickManager().isFrozen()) {
+                                        ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsNotFrozen"));
+                                        return Command.SINGLE_SUCCESS;
+                                    }
                                     if (newTps > maxTps) {
                                         ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsAboveValid")
                                                 .replace("%max%", String.valueOf(maxTps)));
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    if (!Bukkit.getServerTickManager().isFrozen()) {
-                                        ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsNotFrozen"));
                                         return Command.SINGLE_SUCCESS;
                                     }
                                     Bukkit.getServerTickManager().stepGameIfFrozen(newTps);
@@ -155,20 +153,5 @@ public class TPSCommand {
                         )
                 );
                 return tpsBuilder.build();
-    }
-    private static long getMaxTickPerm(CommandSender sender, String permPath, long max) {
-        for (String permission : sender.getEffectivePermissions().stream().map(PermissionAttachmentInfo::getPermission).toList()) {
-            if (permission.startsWith(permPath)) {
-                String[] parts = permission.split("\\.");
-                if (parts.length != 3) { return max; }
-                if (parts[2].equals("*")) { return max; }
-                try {
-                    return Long.parseLong(parts[2]);
-                } catch (NumberFormatException e) {
-                    return max;
-                }
-            }
-        }
-        return max;
     }
 }
