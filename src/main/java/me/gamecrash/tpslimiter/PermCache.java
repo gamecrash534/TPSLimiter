@@ -1,6 +1,5 @@
 package me.gamecrash.tpslimiter;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -35,13 +34,10 @@ public class PermCache {
         long maxStep = plugin.getConfig().getLong("maxStepCount");
         long maxTps = plugin.getConfig().getLong("maxTps");
         if (!cache.containsKey(((Player)sender).getUniqueId())) {
-            plugin.logger.info(Component.text("Caching perms for " + sender.getName()));
             cachePlayerPerms(sender);
         }
-        plugin.logger.info(Component.text("Retrieving perms for " + sender.getName()));
         Map<Long, Long> perms = cache.get(((Player)sender).getUniqueId());
 
-        plugin.logger.info(Component.text("Complete, map: " + perms.toString()));
         if (isStep) return perms.getOrDefault(1L, maxStep);
         else return perms.getOrDefault(0L, maxTps);
     }
