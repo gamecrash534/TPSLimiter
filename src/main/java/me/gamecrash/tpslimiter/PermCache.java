@@ -28,7 +28,6 @@ public class PermCache {
             }
         }
         cache.put(((Player)sender).getUniqueId(), permCache);
-
     }
     public long getMax(CommandSender sender, boolean isStep) {
         long maxStep = plugin.getConfig().getLong("maxStepCount");
