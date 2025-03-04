@@ -9,7 +9,9 @@ permissions:
   tps:
     description: Shows current tps.
     default: true
-
+  tps.info:
+    description: Shows information about the current state.
+    default: true
   tps.set:
     description: Allows the player to set the tps.
     default: false

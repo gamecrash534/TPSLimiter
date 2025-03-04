@@ -2,7 +2,6 @@ package me.gamecrash.tpslimiter;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.LongArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -151,6 +150,13 @@ public class TPSCommand {
                                     return Command.SINGLE_SUCCESS;
                                 })
                         )
+                )
+                .then(Commands.literal("info")
+                        .requires(sender -> sender.getSender().hasPermission("tps.info"))
+                        .executes(ctx -> {
+                            ctx.getSource().getSender().sendRichMessage(returnFormatted(MessageHelper.getMessage("messages.tpsInfo")));
+                            return Command.SINGLE_SUCCESS;
+                        })
                 );
         return tpsBuilder.build();
     }

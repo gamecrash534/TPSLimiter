@@ -7,6 +7,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.ServerTickManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -59,6 +60,12 @@ public class MessageHelper {
     public static String returnFormatted(String unformatted, CommandSender sender, long newTps) {
         return unformatted.replace("%player%", sender.getName())
                 .replace("%tps%", String.valueOf(newTps));
+    }
+    public static String returnFormatted(String unformatted) {
+        ServerTickManager tickManager = Bukkit.getServer().getServerTickManager();
+        return unformatted.replace("%frozen%", String.valueOf(tickManager.isFrozen()))
+                .replace("%tps%", String.format(Locale.US, "%.1f", tickManager.getTickRate()))
+                .replace("%stepping%", String.valueOf(tickManager.isStepping()));
     }
 
     private static String getColorFormattedTps(double tps) {
