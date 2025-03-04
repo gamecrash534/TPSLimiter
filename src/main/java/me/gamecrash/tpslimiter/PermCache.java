@@ -18,12 +18,18 @@ public class PermCache {
         TPSProperties permCache = new TPSProperties();
         for (String perm : sender.getEffectivePermissions().stream().map(PermissionAttachmentInfo::getPermission).toList()) {
             if (perm.startsWith("tps.set")) {
-                String value = perm.substring("tps.set.".length());
-                if (value.equals("*")) value = String.valueOf(maxTps);
+                String value = String.valueOf(maxTps);
+                if (perm.length() > "tps.set".length()) {
+                    value = perm.substring("tps.set.".length());
+                    if (value.equals("*")) value = String.valueOf(maxTps);
+                }
                 permCache.maxTps = Integer.parseInt(value);
             } else if (perm.startsWith("tps.step")) {
-                String value = perm.substring("tps.step.".length());
-                if (value.equals("*")) value = String.valueOf(maxStep);
+                String value = String.valueOf(maxStep);
+                if (perm.length() > "tps.step".length()) {
+                    value = perm.substring("tps.step.".length());
+                    if (value.equals("*")) value = String.valueOf(maxStep);
+                }
                 permCache.maxStepCount =  Integer.parseInt(value);
             }
         }
