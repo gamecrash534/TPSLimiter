@@ -10,35 +10,35 @@ import java.util.UUID;
 
 public class PermCache {
     TPSLimiter plugin = (TPSLimiter)Bukkit.getPluginManager().getPlugin("TPSLimiter");
-    private final Map<UUID, Map<Long, Long>> cache = new HashMap<>();
+    private final Map<UUID, Map<Integer, Integer>> cache = new HashMap<>();
 
     private void cachePlayerPerms(CommandSender sender) {
-        long maxStep = plugin.getConfig().getLong("maxStepCount");
-        long maxTps = plugin.getConfig().getLong("maxTps");
-        Map<Long, Long> permCache = new HashMap<>();
+        int maxStep = plugin.getConfig().getInt("maxStepCount");
+        int maxTps = plugin.getConfig().getInt("maxTps");
+        Map<Integer, Integer> permCache = new HashMap<>();
         for (String perm : sender.getEffectivePermissions().stream().map(PermissionAttachmentInfo::getPermission).toList()) {
             if (perm.startsWith("tps.set")) {
                 String value = perm.substring("tps.set.".length());
                 if (value.equals("*")) value = String.valueOf(maxTps);
-                permCache.put(0L, Long.parseLong(value));
+                permCache.put(0, Integer.parseInt(value));
             } else if (perm.startsWith("tps.step")) {
                 String value = perm.substring("tps.step.".length());
                 if (value.equals("*")) value = String.valueOf(maxStep);
-                permCache.put(1L, Long.parseLong(value));
+                permCache.put(1, Integer.parseInt(value));
             }
         }
         cache.put(((Player)sender).getUniqueId(), permCache);
     }
-    public long getMax(CommandSender sender, boolean isStep) {
-        long maxStep = plugin.getConfig().getLong("maxStepCount");
-        long maxTps = plugin.getConfig().getLong("maxTps");
+    public int getMax(CommandSender sender, boolean isStep) {
+        int maxStep = plugin.getConfig().getInt("maxStepCount");
+        int maxTps = plugin.getConfig().getInt("maxTps");
         if (!cache.containsKey(((Player)sender).getUniqueId())) {
             cachePlayerPerms(sender);
         }
-        Map<Long, Long> perms = cache.get(((Player)sender).getUniqueId());
+        Map<Integer, Integer> perms = cache.get(((Player)sender).getUniqueId());
 
-        if (isStep) return perms.getOrDefault(1L, maxStep);
-        else return perms.getOrDefault(0L, maxTps);
+        if (isStep) return perms.getOrDefault(1, maxStep);
+        else return perms.getOrDefault(0, maxTps);
     }
     public void clearCache() {
         cache.clear();

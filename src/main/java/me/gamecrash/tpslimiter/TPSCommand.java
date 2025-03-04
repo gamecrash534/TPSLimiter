@@ -82,10 +82,10 @@ public class TPSCommand {
                 )
                 .then(Commands.literal("set")
                         .requires(sender -> sender.getSender().hasPermission("tps.set"))
-                        .then(Commands.argument("tps", LongArgumentType.longArg(1))
+                        .then(Commands.argument("tps", IntegerArgumentType.integer(1))
                                 .executes(ctx -> {
-                                    long newTps = LongArgumentType.getLong(ctx, "tps");
-                                    long maxTps = plugin.permCache.getMax(ctx.getSource().getSender(), false);
+                                    int newTps = IntegerArgumentType.getInteger(ctx, "tps");
+                                    int maxTps = plugin.permCache.getMax(ctx.getSource().getSender(), false);
                                     if (newTps > maxTps) {
                                         ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsAboveValid")
                                                 .replace("%max%", String.valueOf(maxTps)));
@@ -127,7 +127,7 @@ public class TPSCommand {
                         .then(Commands.argument("tick", IntegerArgumentType.integer(1))
                                 .executes(ctx -> {
                                     int newTps = IntegerArgumentType.getInteger(ctx, "tick");
-                                    long maxTps = plugin.permCache.getMax(ctx.getSource().getSender(), true);
+                                    int maxTps = plugin.permCache.getMax(ctx.getSource().getSender(), true);
                                     if (!Bukkit.getServerTickManager().isFrozen()) {
                                         ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsNotFrozen"));
                                         return Command.SINGLE_SUCCESS;
@@ -152,6 +152,6 @@ public class TPSCommand {
                                 })
                         )
                 );
-                return tpsBuilder.build();
+        return tpsBuilder.build();
     }
 }
