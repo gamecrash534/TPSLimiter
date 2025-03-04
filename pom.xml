@@ -6,7 +6,7 @@
 
     <groupId>me.gamecrash</groupId>
     <artifactId>TPSLimiter</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.3.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>TPSLimiter</name>
@@ -76,6 +76,12 @@
             <groupId>me.lucko</groupId>
             <artifactId>spark-api</artifactId>
             <version>0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

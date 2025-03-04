@@ -12,7 +12,7 @@ public class PermCache {
     TPSLimiter plugin = (TPSLimiter)Bukkit.getPluginManager().getPlugin("TPSLimiter");
     private final Map<UUID, TPSProperties> cache = new HashMap<>();
 
-    private void cachePlayerPerms(CommandSender sender) {
+    public void cachePlayerPerms(CommandSender sender) {
         int maxStep = plugin.getConfig().getInt("maxStepCount");
         int maxTps = plugin.getConfig().getInt("maxTps");
         TPSProperties permCache = new TPSProperties();
@@ -38,5 +38,11 @@ public class PermCache {
     }
     public void clearCache() {
         cache.clear();
+    }
+    public void clearCachedUser(UUID uuid) {
+        cache.remove(uuid);
+    }
+    public boolean isUserCached(UUID uuid) {
+        return cache.containsKey(uuid);
     }
 }
