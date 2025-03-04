@@ -18,19 +18,21 @@ public class PermCache {
         TPSProperties permCache = new TPSProperties();
         for (String perm : sender.getEffectivePermissions().stream().map(PermissionAttachmentInfo::getPermission).toList()) {
             if (perm.startsWith("tps.set")) {
-                String value = String.valueOf(maxTps);
-                if (perm.length() > "tps.set".length()) {
-                    value = perm.substring("tps.set.".length());
-                    if (value.equals("*")) value = String.valueOf(maxTps);
+                int value;
+                if (perm.equals("tps.set") || perm.equals("tps.set.*")) {
+                    value = maxTps;
+                } else {
+                    value = Integer.parseInt(perm.substring("tps.set.".length()));
                 }
-                permCache.maxTps = Integer.parseInt(value);
+                permCache.maxTps = value;
             } else if (perm.startsWith("tps.step")) {
-                String value = String.valueOf(maxStep);
-                if (perm.length() > "tps.step".length()) {
-                    value = perm.substring("tps.step.".length());
-                    if (value.equals("*")) value = String.valueOf(maxStep);
+                int value;
+                if (perm.equals("tps.step") || perm.equals("tps.step.*")) {
+                    value = maxStep;
+                } else {
+                    value = Integer.parseInt(perm.substring("tps.step.".length()));
                 }
-                permCache.maxStepCount =  Integer.parseInt(value);
+                permCache.maxStepCount = value;
             }
         }
         cache.put(((Player)sender).getUniqueId(), permCache);
