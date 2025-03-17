@@ -11,8 +11,7 @@ public final class TPSLimiter extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-        saveDefaultConfig();
+        reloadConfig();
         permCache = new PermCache();
         luckPerms = Bukkit.getServer().getServicesManager().load(LuckPerms.class);
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
@@ -26,6 +25,7 @@ public final class TPSLimiter extends JavaPlugin {
     }
 
     public void reloadConf() {
+        getConfig().options().copyDefaults();
         saveDefaultConfig();
         permCache.clearCache();
         reloadConfig();
