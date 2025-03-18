@@ -94,6 +94,15 @@ public class TPSCommand {
                 )
                 .then(Commands.literal("step")
                         .requires(sender -> sender.getSender().hasPermission("tps.step"))
+                        .executes(ctx -> {
+                            if (!Bukkit.getServerTickManager().isFrozen()) {
+                                ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsNotFrozen"));
+                                return Command.SINGLE_SUCCESS;
+                            }
+                            Bukkit.getServerTickManager().stepGameIfFrozen(1);
+                            broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsStep"), 1), ctx.getSource().getSender());
+                            return Command.SINGLE_SUCCESS;
+                        })
                         .then(Commands.argument("tick", IntegerArgumentType.integer(1))
                                 .executes(ctx -> {
                                     int newTps = IntegerArgumentType.getInteger(ctx, "tick");
