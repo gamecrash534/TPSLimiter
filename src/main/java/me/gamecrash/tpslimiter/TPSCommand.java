@@ -10,11 +10,11 @@ import me.lucko.spark.api.Spark;
 import me.lucko.spark.api.SparkProvider;
 import me.lucko.spark.api.statistic.StatisticWindow;
 import me.lucko.spark.api.statistic.types.DoubleStatistic;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ServerTickManager;
 
 import static me.gamecrash.tpslimiter.MessageHelper.returnFormatted;
+import static me.gamecrash.tpslimiter.MessageHelper.broadcastMessage;
 
 
 public class TPSCommand {
@@ -46,15 +46,8 @@ public class TPSCommand {
                                 return Command.SINGLE_SUCCESS;
                             }
                             serverTickManager.setFrozen(true);
-                            if (plugin.getConfig().getBoolean("broadcastChanges")) {
-                                Bukkit.broadcast(MiniMessage.miniMessage().deserialize(
-                                        returnFormatted(MessageHelper.getMessage("messages.tpsFreeze"), ctx.getSource().getSender()))
-                                );
-                            } else {
-                                ctx.getSource().getSender().sendRichMessage(
-                                        returnFormatted(MessageHelper.getMessage("messages.tpsFreeze"), plugin.getConfig().getString("yourselfString"))
-                                );
-                            }
+                            broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsFreeze")), ctx.getSource().getSender());
+
                             return Command.SINGLE_SUCCESS;
                         })
                 )
@@ -67,15 +60,8 @@ public class TPSCommand {
                                 return Command.SINGLE_SUCCESS;
                             }
                             serverTickManager.setFrozen(false);
-                            if (plugin.getConfig().getBoolean("broadcastChanges")) {
-                                Bukkit.broadcast(MiniMessage.miniMessage().deserialize(
-                                    returnFormatted(MessageHelper.getMessage("messages.tpsUnfreeze"), ctx.getSource().getSender()))
-                                );
-                            } else {
-                                ctx.getSource().getSender().sendRichMessage(
-                                        returnFormatted(MessageHelper.getMessage("messages.tpsUnfreeze"), plugin.getConfig().getString("yourselfString"))
-                                );
-                            }
+                            broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsUnfreeze")), ctx.getSource().getSender());
+
                             return Command.SINGLE_SUCCESS;
                         })
                 )
@@ -91,16 +77,8 @@ public class TPSCommand {
                                         return Command.SINGLE_SUCCESS;
                                     }
                                     Bukkit.getServerTickManager().setTickRate(newTps);
-                                    if (plugin.getConfig().getBoolean("broadcastChanges")) {
-                                        Bukkit.broadcast(MiniMessage.miniMessage().deserialize(
-                                                returnFormatted(MessageHelper.getMessage("messages.tpsSet"), ctx.getSource().getSender(), newTps))
-                                        );
-                                    } else {
-                                        ctx.getSource().getSender().sendRichMessage(
-                                                returnFormatted(MessageHelper.getMessage("messages.tpsSet"),
-                                                        plugin.getConfig().getString("yourselfString")).replace("%tps%", String.valueOf(newTps))
-                                        );
-                                    }
+                                    broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsSet"), newTps), ctx.getSource().getSender());
+
                                     return Command.SINGLE_SUCCESS;
                                 })
                 ))
@@ -109,15 +87,8 @@ public class TPSCommand {
                         .executes(ctx -> {
                             Bukkit.getServerTickManager().setFrozen(false);
                             Bukkit.getServerTickManager().setTickRate(20);
-                            if (plugin.getConfig().getBoolean("broadcastChanges")) {
-                                Bukkit.broadcast(MiniMessage.miniMessage().deserialize(
-                                        returnFormatted(MessageHelper.getMessage("messages.tpsReset"), ctx.getSource().getSender()))
-                                );
-                            } else {
-                                ctx.getSource().getSender().sendRichMessage(
-                                        returnFormatted(MessageHelper.getMessage("messages.tpsReset"), plugin.getConfig().getString("yourselfString"))
-                                );
-                            }
+
+                            broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsReset")), ctx.getSource().getSender());
                             return Command.SINGLE_SUCCESS;
                         })
                 )
@@ -137,16 +108,8 @@ public class TPSCommand {
                                         return Command.SINGLE_SUCCESS;
                                     }
                                     Bukkit.getServerTickManager().stepGameIfFrozen(newTps);
-                                    if (plugin.getConfig().getBoolean("broadcastChanges")) {
-                                        Bukkit.broadcast(MiniMessage.miniMessage().deserialize(
-                                                returnFormatted(MessageHelper.getMessage("messages.tpsStep"), ctx.getSource().getSender(), newTps))
-                                        );
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    ctx.getSource().getSender().sendRichMessage(
-                                            returnFormatted(MessageHelper.getMessage("messages.tpsStep"),
-                                                    plugin.getConfig().getString("yourselfString")).replace("%max%", String.valueOf(maxTps))
-                                    );
+                                    broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsStep"), newTps), ctx.getSource().getSender());
+
                                     return Command.SINGLE_SUCCESS;
                                 })
                         )

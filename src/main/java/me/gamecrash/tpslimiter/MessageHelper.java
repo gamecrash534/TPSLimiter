@@ -51,21 +51,28 @@ public class MessageHelper {
                 .replace("%5m%", getColorFormattedTps(m5))
                 .replace("%15m%", getColorFormattedTps(m15));
     }
-    public static String returnFormatted(String unformatted, CommandSender sender) {
-        return unformatted.replace("%player%", sender.getName());
-    }
     public static String returnFormatted(String unformatted, String sender) {
         return unformatted.replace("%player%", sender);
     }
-    public static String returnFormatted(String unformatted, CommandSender sender, long newTps) {
-        return unformatted.replace("%player%", sender.getName())
-                .replace("%tps%", String.valueOf(newTps));
+    public static String returnFormatted(String unformatted, long newTps) {
+        return unformatted.replace("%tps%", String.valueOf(newTps));
     }
     public static String returnFormatted(String unformatted) {
         ServerTickManager tickManager = Bukkit.getServer().getServerTickManager();
         return unformatted.replace("%frozen%", String.valueOf(tickManager.isFrozen()))
                 .replace("%tps%", String.format(Locale.US, "%.1f", tickManager.getTickRate()))
                 .replace("%stepping%", String.valueOf(tickManager.isStepping()));
+    }
+
+    public static void broadcastMessage(String message, CommandSender sender) {
+        if (plugin.getConfig().getBoolean("broadcastChanges")) {
+            Bukkit.broadcast(MiniMessage.miniMessage().deserialize(
+                    message.replace("%player%", sender.getName())
+            ));
+        } else {
+            sender.sendRichMessage(message.replace("%player%", plugin.getConfig().getString("yourselfString")));
+
+        }
     }
 
     private static String getColorFormattedTps(double tps) {
@@ -82,4 +89,5 @@ public class MessageHelper {
             return mediumColor + String.format(Locale.US, "%.1f", tps);
         }
     }
+
 }
