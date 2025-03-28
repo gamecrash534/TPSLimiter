@@ -82,11 +82,11 @@ public class MessageHelper {
         String mediumColor = plugin.getConfig().getString("tpsColor.mediumTpsColor");
         String lowColor = plugin.getConfig().getString("tpsColor.lowTpsColor");
         if (tps > mediumTps) {
-            return highColor + String.format(Locale.US, "%.1f", tps);
+            return highColor + String.format(Locale.US, "%.1f", tps) + highColor.replaceAll("<", "</");
         } else if (tps <= lowTps) {
-            return lowColor + String.format(Locale.US, "%.1f", tps);
+            return lowColor + String.format(Locale.US, "%.1f", tps) + lowColor.replaceAll("<", "</");
         } else {
-            return mediumColor + String.format(Locale.US, "%.1f", tps);
+            return mediumColor + String.format(Locale.US, "%.1f", tps) + mediumColor.replaceAll("<", "</");
         }
     }
 
