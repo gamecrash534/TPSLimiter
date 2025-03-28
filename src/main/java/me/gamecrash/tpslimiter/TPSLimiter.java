@@ -30,6 +30,4 @@ public final class TPSLimiter extends JavaPlugin {
         permCache.clearCache();
         reloadConfig();
     }
-
-
 }
