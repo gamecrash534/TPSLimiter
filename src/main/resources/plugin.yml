@@ -1,5 +1,6 @@
 name: TPSLimiter
 author: game.crash
+description: A simple plugin for the TPS control of a Server, with a bit more customization.
 depend:
   - 'LuckPerms'
 version: ${project.version}
