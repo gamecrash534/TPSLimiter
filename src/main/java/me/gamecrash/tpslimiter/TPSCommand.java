@@ -38,97 +38,97 @@ public class TPSCommand {
                     })
                 )
                 .then(Commands.literal("freeze")
-                        .requires(sender -> sender.getSender().hasPermission("tps.freeze"))
-                        .executes(ctx -> {
-                            ServerTickManager serverTickManager = Bukkit.getServerTickManager();
-                            if (serverTickManager.isFrozen()) {
-                                ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsAlreadyFrozen"));
-                                return Command.SINGLE_SUCCESS;
-                            }
-                            serverTickManager.setFrozen(true);
-                            broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsFreeze")), ctx.getSource().getSender());
-
+                    .requires(sender -> sender.getSender().hasPermission("tps.freeze"))
+                    .executes(ctx -> {
+                        ServerTickManager serverTickManager = Bukkit.getServerTickManager();
+                        if (serverTickManager.isFrozen()) {
+                            ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsAlreadyFrozen"));
                             return Command.SINGLE_SUCCESS;
-                        })
+                        }
+                        serverTickManager.setFrozen(true);
+                        broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsFreeze")), ctx.getSource().getSender());
+
+                        return Command.SINGLE_SUCCESS;
+                    })
                 )
                 .then(Commands.literal("unfreeze")
-                        .requires(sender -> sender.getSender().hasPermission("tps.unfreeze"))
-                        .executes(ctx -> {
-                            ServerTickManager serverTickManager = Bukkit.getServerTickManager();
-                            if (!serverTickManager.isFrozen()) {
-                                ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsAlreadyUnfrozen"));
-                                return Command.SINGLE_SUCCESS;
-                            }
-                            serverTickManager.setFrozen(false);
-                            broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsUnfreeze")), ctx.getSource().getSender());
-
+                    .requires(sender -> sender.getSender().hasPermission("tps.unfreeze"))
+                    .executes(ctx -> {
+                        ServerTickManager serverTickManager = Bukkit.getServerTickManager();
+                        if (!serverTickManager.isFrozen()) {
+                            ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsAlreadyUnfrozen"));
                             return Command.SINGLE_SUCCESS;
-                        })
+                        }
+                        serverTickManager.setFrozen(false);
+                        broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsUnfreeze")), ctx.getSource().getSender());
+
+                        return Command.SINGLE_SUCCESS;
+                    })
                 )
                 .then(Commands.literal("set")
-                        .requires(sender -> sender.getSender().hasPermission("tps.set"))
-                        .then(Commands.argument("tps", IntegerArgumentType.integer(1))
-                                .executes(ctx -> {
-                                    int newTps = IntegerArgumentType.getInteger(ctx, "tps");
-                                    int maxTps = plugin.permCache.getMax(ctx.getSource().getSender(), false);
-                                    if (newTps > maxTps) {
-                                        ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsAboveValid")
-                                                .replace("%max%", String.valueOf(maxTps)));
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    Bukkit.getServerTickManager().setTickRate(newTps);
-                                    broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsSet"), newTps), ctx.getSource().getSender());
-
+                    .requires(sender -> sender.getSender().hasPermission("tps.set"))
+                    .then(Commands.argument("tps", IntegerArgumentType.integer(1))
+                        .executes(ctx -> {
+                                int newTps = IntegerArgumentType.getInteger(ctx, "tps");
+                                int maxTps = plugin.permCache.getMax(ctx.getSource().getSender(), false);
+                                if (newTps > maxTps) {
+                                    ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsAboveValid")
+                                            .replace("%max%", String.valueOf(maxTps)));
                                     return Command.SINGLE_SUCCESS;
-                                })
+                                }
+                                Bukkit.getServerTickManager().setTickRate(newTps);
+                                broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsSet"), newTps), ctx.getSource().getSender());
+
+                                return Command.SINGLE_SUCCESS;
+                            })
                 ))
                 .then(Commands.literal("reset")
-                        .requires(sender -> sender.getSender().hasPermission("tps.reset"))
-                        .executes(ctx -> {
-                            Bukkit.getServerTickManager().setFrozen(false);
-                            Bukkit.getServerTickManager().setTickRate(20);
+                    .requires(sender -> sender.getSender().hasPermission("tps.reset"))
+                    .executes(ctx -> {
+                        Bukkit.getServerTickManager().setFrozen(false);
+                        Bukkit.getServerTickManager().setTickRate(20);
 
-                            broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsReset")), ctx.getSource().getSender());
-                            return Command.SINGLE_SUCCESS;
-                        })
+                        broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsReset")), ctx.getSource().getSender());
+                        return Command.SINGLE_SUCCESS;
+                    })
                 )
                 .then(Commands.literal("step")
-                        .requires(sender -> sender.getSender().hasPermission("tps.step"))
-                        .executes(ctx -> {
-                            if (!Bukkit.getServerTickManager().isFrozen()) {
-                                ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsNotFrozen"));
-                                return Command.SINGLE_SUCCESS;
-                            }
-                            Bukkit.getServerTickManager().stepGameIfFrozen(1);
-                            broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsStep"), 1), ctx.getSource().getSender());
+                    .requires(sender -> sender.getSender().hasPermission("tps.step"))
+                    .executes(ctx -> {
+                        if (!Bukkit.getServerTickManager().isFrozen()) {
+                            ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsNotFrozen"));
                             return Command.SINGLE_SUCCESS;
-                        })
-                        .then(Commands.argument("tick", IntegerArgumentType.integer(1))
-                                .executes(ctx -> {
-                                    int newTps = IntegerArgumentType.getInteger(ctx, "tick");
-                                    int maxTps = plugin.permCache.getMax(ctx.getSource().getSender(), true);
-                                    if (!Bukkit.getServerTickManager().isFrozen()) {
-                                        ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsNotFrozen"));
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    if (newTps > maxTps) {
-                                        ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsAboveValid")
-                                                .replace("%max%", String.valueOf(maxTps)));
-                                        return Command.SINGLE_SUCCESS;
-                                    }
-                                    Bukkit.getServerTickManager().stepGameIfFrozen(newTps);
-                                    broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsStep"), newTps), ctx.getSource().getSender());
-
+                        }
+                        Bukkit.getServerTickManager().stepGameIfFrozen(1);
+                        broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsStep"), 1), ctx.getSource().getSender());
+                        return Command.SINGLE_SUCCESS;
+                    })
+                    .then(Commands.argument("tick", IntegerArgumentType.integer(1))
+                        .executes(ctx -> {
+                                int newTps = IntegerArgumentType.getInteger(ctx, "tick");
+                                int maxTps = plugin.permCache.getMax(ctx.getSource().getSender(), true);
+                                if (!Bukkit.getServerTickManager().isFrozen()) {
+                                    ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsNotFrozen"));
                                     return Command.SINGLE_SUCCESS;
-                                })
-                        )
+                                }
+                                if (newTps > maxTps) {
+                                    ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsAboveValid")
+                                            .replace("%max%", String.valueOf(maxTps)));
+                                    return Command.SINGLE_SUCCESS;
+                                }
+                                Bukkit.getServerTickManager().stepGameIfFrozen(newTps);
+                                broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsStep"), newTps), ctx.getSource().getSender());
+
+                                return Command.SINGLE_SUCCESS;
+                            })
+                    )
                 )
                 .then(Commands.literal("info")
-                        .requires(sender -> sender.getSender().hasPermission("tps.info"))
-                        .executes(ctx -> {
-                            ctx.getSource().getSender().sendRichMessage(returnFormatted(MessageHelper.getMessage("messages.tpsInfo")));
-                            return Command.SINGLE_SUCCESS;
-                        })
+                    .requires(sender -> sender.getSender().hasPermission("tps.info"))
+                    .executes(ctx -> {
+                        ctx.getSource().getSender().sendRichMessage(returnFormatted(MessageHelper.getMessage("messages.tpsInfo")));
+                        return Command.SINGLE_SUCCESS;
+                    })
                 );
         return tpsBuilder.build();
     }
