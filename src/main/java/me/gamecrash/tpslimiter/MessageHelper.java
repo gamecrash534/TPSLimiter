@@ -14,7 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Locale;
 
 public class MessageHelper {
-    private final static JavaPlugin plugin = (JavaPlugin)Bukkit.getPluginManager().getPlugin("TPSLimiter");
+    static TPSLimiter plugin = TPSLimiter.getPlugin();
 
     public static String getMessage(String messagePath) {
         boolean prefix = plugin.getConfig().getBoolean("showPrefix");

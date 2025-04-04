@@ -30,4 +30,8 @@ public final class TPSLimiter extends JavaPlugin {
         permCache.clearCache();
         reloadConfig();
     }
+
+    public static TPSLimiter getPlugin() {
+        return (TPSLimiter) Bukkit.getPluginManager().getPlugin("TPSLimiter");
+    }
 }

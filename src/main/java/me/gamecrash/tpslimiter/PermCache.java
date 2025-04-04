@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PermCache {
-    TPSLimiter plugin = (TPSLimiter)Bukkit.getPluginManager().getPlugin("TPSLimiter");
+    TPSLimiter plugin = TPSLimiter.getPlugin();
     private final Map<UUID, TPSProperties> cache = new HashMap<>();
 
     public void cachePlayerPerms(CommandSender sender) {

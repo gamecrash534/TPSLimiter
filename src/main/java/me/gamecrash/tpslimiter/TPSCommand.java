@@ -19,7 +19,7 @@ import static me.gamecrash.tpslimiter.MessageHelper.broadcastMessage;
 
 public class TPSCommand {
     public static LiteralCommandNode<CommandSourceStack> build() {
-        TPSLimiter plugin = (TPSLimiter)Bukkit.getPluginManager().getPlugin("TPSLimiter");
+        TPSLimiter plugin = TPSLimiter.getPlugin();
         LiteralArgumentBuilder<CommandSourceStack> tpsBuilder = Commands.literal("tps")
                 .requires(sender -> sender.getSender().hasPermission("tps"))
                 .executes(ctx -> {

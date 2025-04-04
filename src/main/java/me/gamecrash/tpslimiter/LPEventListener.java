@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import java.util.UUID;
 
 public class LPEventListener {
-    private final TPSLimiter plugin = (TPSLimiter)Bukkit.getPluginManager().getPlugin("TPSLimiter");
+    private final TPSLimiter plugin = TPSLimiter.getPlugin();
     private  LuckPerms luckPerms;
 
     public void register(LuckPerms lp) {
