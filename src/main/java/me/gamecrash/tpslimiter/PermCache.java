@@ -17,20 +17,20 @@ public class PermCache {
         int maxTps = plugin.getConfig().getInt("maxTps");
         TPSProperties permCache = new TPSProperties();
         for (String perm : sender.getEffectivePermissions().stream().map(PermissionAttachmentInfo::getPermission).toList()) {
-            if (perm.startsWith("tps.set")) {
+            if (perm.startsWith("tpslimiter.set")) {
                 int value;
-                if (perm.equals("tps.set") || perm.equals("tps.set.*")) {
+                if (perm.equals("tpslimiter.set") || perm.equals("tpslimiter.set.*")) {
                     value = maxTps;
                 } else {
-                    value = Integer.parseInt(perm.substring("tps.set.".length()));
+                    value = Integer.parseInt(perm.substring("tpslimiter.set.".length()));
                 }
                 permCache.maxTps = value;
-            } else if (perm.startsWith("tps.step")) {
+            } else if (perm.startsWith("tpslimiter.step")) {
                 int value;
-                if (perm.equals("tps.step") || perm.equals("tps.step.*")) {
+                if (perm.equals("tpslimiter.step") || perm.equals("tpslimiter.step.*")) {
                     value = maxStep;
                 } else {
-                    value = Integer.parseInt(perm.substring("tps.step.".length()));
+                    value = Integer.parseInt(perm.substring("tpslimiter.step.".length()));
                 }
                 permCache.maxStepCount = value;
             }

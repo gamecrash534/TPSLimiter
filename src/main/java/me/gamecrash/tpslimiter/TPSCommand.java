@@ -21,7 +21,7 @@ public class TPSCommand {
     public static LiteralCommandNode<CommandSourceStack> build() {
         TPSLimiter plugin = TPSLimiter.getPlugin();
         LiteralArgumentBuilder<CommandSourceStack> tpsBuilder = Commands.literal("tps")
-                .requires(sender -> sender.getSender().hasPermission("tps"))
+                .requires(sender -> sender.getSender().hasPermission("tpslimiter"))
                 .executes(ctx -> {
                     Spark spark = SparkProvider.get();
                     DoubleStatistic<StatisticWindow.TicksPerSecond> tps = spark.tps();
@@ -30,7 +30,7 @@ public class TPSCommand {
                     return Command.SINGLE_SUCCESS;
                 })
                 .then(Commands.literal("reload")
-                    .requires(sender -> sender.getSender().hasPermission("tps.reload"))
+                    .requires(sender -> sender.getSender().hasPermission("tpslimiter.reload"))
                     .executes(ctx -> {
                         plugin.reloadConf();
                         ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.reload"));
@@ -38,7 +38,7 @@ public class TPSCommand {
                     })
                 )
                 .then(Commands.literal("freeze")
-                    .requires(sender -> sender.getSender().hasPermission("tps.freeze"))
+                    .requires(sender -> sender.getSender().hasPermission("tpslimiter.freeze"))
                     .executes(ctx -> {
                         ServerTickManager serverTickManager = Bukkit.getServerTickManager();
                         if (serverTickManager.isFrozen()) {
@@ -52,7 +52,7 @@ public class TPSCommand {
                     })
                 )
                 .then(Commands.literal("unfreeze")
-                    .requires(sender -> sender.getSender().hasPermission("tps.unfreeze"))
+                    .requires(sender -> sender.getSender().hasPermission("tpslimiter.unfreeze"))
                     .executes(ctx -> {
                         ServerTickManager serverTickManager = Bukkit.getServerTickManager();
                         if (!serverTickManager.isFrozen()) {
@@ -66,7 +66,7 @@ public class TPSCommand {
                     })
                 )
                 .then(Commands.literal("set")
-                    .requires(sender -> sender.getSender().hasPermission("tps.set"))
+                    .requires(sender -> sender.getSender().hasPermission("tpslimiter.set"))
                     .then(Commands.argument("tps", IntegerArgumentType.integer(1))
                         .executes(ctx -> {
                             int newTps = IntegerArgumentType.getInteger(ctx, "tps");
@@ -83,7 +83,7 @@ public class TPSCommand {
                         })
                 ))
                 .then(Commands.literal("reset")
-                    .requires(sender -> sender.getSender().hasPermission("tps.reset"))
+                    .requires(sender -> sender.getSender().hasPermission("tpslimiter.reset"))
                     .executes(ctx -> {
                         Bukkit.getServerTickManager().setFrozen(false);
                         Bukkit.getServerTickManager().setTickRate(20);
@@ -93,7 +93,7 @@ public class TPSCommand {
                     })
                 )
                 .then(Commands.literal("step")
-                    .requires(sender -> sender.getSender().hasPermission("tps.step"))
+                    .requires(sender -> sender.getSender().hasPermission("tpslimiter.step"))
                     .executes(ctx -> {
                         if (!Bukkit.getServerTickManager().isFrozen()) {
                             ctx.getSource().getSender().sendRichMessage(MessageHelper.getMessage("messages.tpsNotFrozen"));
@@ -124,7 +124,7 @@ public class TPSCommand {
                     )
                 )
                 .then(Commands.literal("info")
-                    .requires(sender -> sender.getSender().hasPermission("tps.info"))
+                    .requires(sender -> sender.getSender().hasPermission("tpslimiter.info"))
                     .executes(ctx -> {
                         ctx.getSource().getSender().sendRichMessage(returnFormatted(MessageHelper.getMessage("messages.tpsInfo")));
                         return Command.SINGLE_SUCCESS;
