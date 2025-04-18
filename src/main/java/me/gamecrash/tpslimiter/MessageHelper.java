@@ -51,9 +51,6 @@ public class MessageHelper {
                 .replace("%5m%", getColorFormattedTps(m5))
                 .replace("%15m%", getColorFormattedTps(m15));
     }
-    public static String returnFormatted(String unformatted, String sender) {
-        return unformatted.replace("%player%", sender);
-    }
     public static String returnFormatted(String unformatted, long newTps) {
         return unformatted.replace("%tps%", String.valueOf(newTps));
     }
