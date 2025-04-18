@@ -7,7 +7,7 @@ dependencies:
     LuckPerms:
       load: BEFORE
       required: true
-      join-classpath: false
+      join-classpath: true
 version: ${project.version}
 main: me.gamecrash.tpslimiter.TPSLimiter
 api-version: '1.21'
