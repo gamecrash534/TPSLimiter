@@ -81,6 +81,16 @@ public class TPSCommand {
 
                             return Command.SINGLE_SUCCESS;
                         })
+                        .then(Commands.literal("-f")
+                            .requires(sender -> sender.getSender().hasPermission("tpslimiter.force"))
+                            .executes(ctx -> {
+                                int newTps = IntegerArgumentType.getInteger(ctx, "tps");
+                                Bukkit.getServerTickManager().setTickRate(newTps);
+                                broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsSet"), newTps), ctx.getSource().getSender());
+
+                                return Command.SINGLE_SUCCESS;
+                            })
+                        )
                 ))
                 .then(Commands.literal("reset")
                     .requires(sender -> sender.getSender().hasPermission("tpslimiter.reset"))
@@ -121,6 +131,16 @@ public class TPSCommand {
 
                             return Command.SINGLE_SUCCESS;
                         })
+                        .then(Commands.literal("-f")
+                            .requires(sender -> sender.getSender().hasPermission("tpslimiter.force"))
+                            .executes(ctx -> {
+                                int newTps = IntegerArgumentType.getInteger(ctx, "tick");
+                                Bukkit.getServerTickManager().stepGameIfFrozen(newTps);
+                                broadcastMessage(returnFormatted(MessageHelper.getMessage("messages.tpsStep"), newTps), ctx.getSource().getSender());
+
+                                return Command.SINGLE_SUCCESS;
+                            })
+                        )
                     )
                 )
                 .then(Commands.literal("info")
