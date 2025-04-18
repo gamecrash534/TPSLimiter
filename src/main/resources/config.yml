@@ -34,3 +34,4 @@ messages:
   tpsAboveValid: "The desired tick-count is above the limit of: %max%"
   tpsNotFrozen: "The tps are not frozen, thus the step command cannot be used"
   reload: "The configuration has been reloaded."
+  notAvailable: "<red>%arg% <white>is <red>not available<white>."
