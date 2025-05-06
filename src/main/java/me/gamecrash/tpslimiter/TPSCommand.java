@@ -15,7 +15,6 @@ import org.bukkit.ServerTickManager;
 import static me.gamecrash.tpslimiter.MessageHelper.*;
 
 public class TPSCommand {
-
     private static final String PERMISSION_BASE = "tpslimiter";
     private static final String PERMISSION_RELOAD = PERMISSION_BASE + ".reload";
     private static final String PERMISSION_FREEZE = PERMISSION_BASE + ".freeze";
@@ -27,19 +26,19 @@ public class TPSCommand {
     private static final String PERMISSION_RESET = PERMISSION_BASE + ".reset";
 
     private static final TPSLimiter plugin = TPSLimiter.getPlugin();
-    public static LiteralCommandNode<CommandSourceStack> build() {
 
+    public static LiteralCommandNode<CommandSourceStack> build() {
         return Commands.literal("tps")
-                .requires(sender -> hasPermission(sender, PERMISSION_BASE))
-                .executes(ctx -> returnTPS(ctx.getSource()))
-                .then(buildReloadCommand())
-                .then(buildFreezeCommand())
-                .then(buildUnfreezeCommand())
-                .then(buildSetCommand())
-                .then(buildResetCommand())
-                .then(buildStepCommand())
-                .then(buildInfoCommand())
-                .build();
+            .requires(sender -> hasPermission(sender, PERMISSION_BASE))
+            .executes(ctx -> returnTPS(ctx.getSource()))
+            .then(buildReloadCommand())
+            .then(buildFreezeCommand())
+            .then(buildUnfreezeCommand())
+            .then(buildSetCommand())
+            .then(buildResetCommand())
+            .then(buildStepCommand())
+            .then(buildInfoCommand())
+            .build();
     }
 
     private static boolean hasPermission(CommandSourceStack sender, String permission) {

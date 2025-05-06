@@ -9,17 +9,15 @@ import java.util.UUID;
 
 public class LPEventListener {
     private final TPSLimiter plugin = TPSLimiter.getPlugin();
-    private  LuckPerms luckPerms;
 
     public void register(LuckPerms lp) {
-        luckPerms = lp;
-        luckPerms.getEventBus().subscribe(plugin, UserDataRecalculateEvent.class, this::listener);
+        lp.getEventBus().subscribe(plugin, UserDataRecalculateEvent.class, this::listener);
     }
 
     private void listener(UserDataRecalculateEvent e) {
         UUID uuid = e.getUser().getUniqueId();
-        CommandSender sender = Bukkit.getPlayer(uuid);
         if (!plugin.permCache.isUserCached(uuid)) return;
+        CommandSender sender = Bukkit.getPlayer(uuid);
         plugin.permCache.clearCachedUser(uuid);
         plugin.permCache.cachePlayerPerms(sender);
     }
