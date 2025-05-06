@@ -52,7 +52,7 @@ public class TPSCommand {
             source.getSender().sendRichMessage(getMessage("messages.notAvailable").replace("%arg%", "TPS-Data"));
             return 1;
         }
-        source.getSender().sendRichMessage(returnFormatted(getMessage("messages.tps"), tps));
+        source.getSender().sendRichMessage(formatTpsMessage(getMessage("messages.tps"), tps));
         return 1;
     }
 
@@ -109,7 +109,9 @@ public class TPSCommand {
                         return 1;
                     }
                     Bukkit.getServerTickManager().setTickRate(newTps);
-                    broadcastMessage(returnFormatted(getMessage("messages.tpsSet"), newTps), ctx.getSource().getSender());
+                    broadcastMessage(
+                        formatTpsMessage(getMessage("messages.tpsSet"), newTps), ctx.getSource().getSender())
+                    ;
                     return 1;
                 })
                 .then(Commands.literal("-f")
@@ -117,7 +119,10 @@ public class TPSCommand {
                     .executes(ctx -> {
                         int newTps = IntegerArgumentType.getInteger(ctx, "tps");
                         Bukkit.getServerTickManager().setTickRate(newTps);
-                        broadcastMessage(returnFormatted(getMessage("messages.tpsSet"), newTps), ctx.getSource().getSender());
+                        broadcastMessage(
+                            formatTpsMessage(getMessage("messages.tpsSet"), newTps),
+                            ctx.getSource().getSender()
+                        );
                         return 1;
                     })
                 )
@@ -130,7 +135,10 @@ public class TPSCommand {
             .executes(ctx -> {
                 Bukkit.getServerTickManager().setFrozen(false);
                 Bukkit.getServerTickManager().setTickRate(20);
-                broadcastMessage(getMessage("messages.tpsReset"), ctx.getSource().getSender());
+                broadcastMessage(
+                    getMessage("messages.tpsReset"),
+                    ctx.getSource().getSender()
+                );
                 return 1;
             });
     }
@@ -144,7 +152,10 @@ public class TPSCommand {
                     return 1;
                 }
                 Bukkit.getServerTickManager().stepGameIfFrozen(1);
-                broadcastMessage(returnFormatted(getMessage("messages.tpsStep"), 1), ctx.getSource().getSender());
+                broadcastMessage(
+                    formatTpsMessage(getMessage("messages.tpsStep"), 1),
+                    ctx.getSource().getSender()
+                );
                 return 1;
             })
             .then(Commands.argument("tick", IntegerArgumentType.integer(1))
@@ -161,7 +172,10 @@ public class TPSCommand {
                         return 1;
                     }
                     Bukkit.getServerTickManager().stepGameIfFrozen(newTps);
-                    broadcastMessage(returnFormatted(getMessage("messages.tpsStep"), newTps), ctx.getSource().getSender());
+                    broadcastMessage(
+                        formatTpsMessage(getMessage("messages.tpsStep"), newTps),
+                        ctx.getSource().getSender()
+                    );
                     return 1;
                 })
                 .then(Commands.literal("-f")
@@ -173,7 +187,10 @@ public class TPSCommand {
                         }
                         int newTps = IntegerArgumentType.getInteger(ctx, "tick");
                         Bukkit.getServerTickManager().stepGameIfFrozen(newTps);
-                        broadcastMessage(returnFormatted(getMessage("messages.tpsStep"), newTps), ctx.getSource().getSender());
+                        broadcastMessage(
+                            formatTpsMessage(getMessage("messages.tpsStep"), newTps),
+                            ctx.getSource().getSender()
+                        );
                         return 1;
                     })
                 )
@@ -184,7 +201,7 @@ public class TPSCommand {
         return Commands.literal("info")
             .requires(sender -> hasPermission(sender, PERMISSION_INFO))
             .executes(ctx -> {
-                ctx.getSource().getSender().sendRichMessage(returnFormatted(getMessage("messages.tpsInfo")));
+                ctx.getSource().getSender().sendRichMessage(formatServerState(getMessage("messages.tpsInfo")));
                 return 1;
             });
     }
