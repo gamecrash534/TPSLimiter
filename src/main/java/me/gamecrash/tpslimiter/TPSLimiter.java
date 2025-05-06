@@ -7,13 +7,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class TPSLimiter extends JavaPlugin {
     public PermCache permCache;
-    private LuckPerms luckPerms;
 
     @Override
     public void onEnable() {
-        reloadConfig();
+        reloadConf();
         permCache = new PermCache();
-        luckPerms = Bukkit.getServer().getServicesManager().load(LuckPerms.class);
+        LuckPerms luckPerms = Bukkit.getServer().getServicesManager().load(LuckPerms.class);
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
                 commands.registrar().register(TPSCommand.build()));
         new LPEventListener().register(luckPerms);
@@ -27,8 +26,10 @@ public final class TPSLimiter extends JavaPlugin {
     public void reloadConf() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-        permCache.clearCache();
         reloadConfig();
+        if (permCache != null) {
+            permCache.clearCache();
+        }
     }
 
     public static TPSLimiter getPlugin() {
