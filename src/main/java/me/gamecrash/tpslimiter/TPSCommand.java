@@ -26,18 +26,18 @@ public class TPSCommand {
     private static final String PERMISSION_INFO = PERMISSION_BASE + ".info";
     private static final String PERMISSION_RESET = PERMISSION_BASE + ".reset";
 
+    private static final TPSLimiter plugin = TPSLimiter.getPlugin();
     public static LiteralCommandNode<CommandSourceStack> build() {
-        TPSLimiter plugin = TPSLimiter.getPlugin();
 
         return Commands.literal("tps")
                 .requires(sender -> hasPermission(sender, PERMISSION_BASE))
                 .executes(ctx -> returnTPS(ctx.getSource()))
-                .then(buildReloadCommand(plugin))
+                .then(buildReloadCommand())
                 .then(buildFreezeCommand())
                 .then(buildUnfreezeCommand())
-                .then(buildSetCommand(plugin))
+                .then(buildSetCommand())
                 .then(buildResetCommand())
-                .then(buildStepCommand(plugin))
+                .then(buildStepCommand())
                 .then(buildInfoCommand())
                 .build();
     }
@@ -48,10 +48,6 @@ public class TPSCommand {
 
     private static int returnTPS(CommandSourceStack source) {
         Spark spark = SparkProvider.get();
-        if (spark == null) {
-            source.getSender().sendRichMessage(getMessage("messages.notAvailable").replace("%arg%", "Spark API"));
-            return 1;
-        }
         DoubleStatistic<StatisticWindow.TicksPerSecond> tps = spark.tps();
         if (tps == null) {
             source.getSender().sendRichMessage(getMessage("messages.notAvailable").replace("%arg%", "TPS-Data"));
@@ -61,7 +57,7 @@ public class TPSCommand {
         return 1;
     }
 
-    private static LiteralArgumentBuilder<CommandSourceStack> buildReloadCommand(TPSLimiter plugin) {
+    private static LiteralArgumentBuilder<CommandSourceStack> buildReloadCommand() {
         return Commands.literal("reload")
             .requires(sender -> hasPermission(sender, PERMISSION_RELOAD))
             .executes(ctx -> {
@@ -101,7 +97,7 @@ public class TPSCommand {
             });
     }
 
-    private static LiteralArgumentBuilder<CommandSourceStack> buildSetCommand(TPSLimiter plugin) {
+    private static LiteralArgumentBuilder<CommandSourceStack> buildSetCommand() {
         return Commands.literal("set")
             .requires(sender -> hasPermission(sender, PERMISSION_SET))
             .then(Commands.argument("tps", IntegerArgumentType.integer(1))
@@ -140,7 +136,7 @@ public class TPSCommand {
             });
     }
 
-    private static LiteralArgumentBuilder<CommandSourceStack> buildStepCommand(TPSLimiter plugin) {
+    private static LiteralArgumentBuilder<CommandSourceStack> buildStepCommand() {
         return Commands.literal("step")
             .requires(sender -> hasPermission(sender, PERMISSION_STEP))
             .executes(ctx -> {
