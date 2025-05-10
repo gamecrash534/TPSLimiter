@@ -47,3 +47,6 @@ permissions:
   tpslimiter.force:
     description: Allows the player to bypass any restrictions whatsoever.
     default: false
+  tpslimiter.getNotifications:
+    description: Allows the player to get the notifications if someone changed values.
+    default: true

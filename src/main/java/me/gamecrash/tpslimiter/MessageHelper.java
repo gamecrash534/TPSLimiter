@@ -23,6 +23,8 @@ public class MessageHelper {
     private static final String MEDIUM_TPS_THRESHOLD_PATH = "tpsColor.mediumTps";
     private static final String LOW_TPS_THRESHOLD_PATH = "tpsColor.lowTps";
 
+    private static final String PERMISSION_GET_NOTIFICATION = "tpslimiter.getNotifications";
+
     private static final TPSLimiter plugin = TPSLimiter.getPlugin();
 
     public static String getMessage(String messagePath) {
@@ -81,7 +83,7 @@ public class MessageHelper {
     public static void broadcastMessage(String message, CommandSender sender) {
         String formattedMessage = message.replace("%player%", sender.getName());
         if (plugin.getConfig().getBoolean(BROADCAST_CHANGES_PATH)) {
-            Bukkit.broadcast(MiniMessage.miniMessage().deserialize(formattedMessage));
+            Bukkit.broadcast(MiniMessage.miniMessage().deserialize(formattedMessage), PERMISSION_GET_NOTIFICATION);
         } else {
             sender.sendRichMessage(formattedMessage.replace("%player%", plugin.getConfig().getString(YOURSELF_STRING_PATH)));
         }
