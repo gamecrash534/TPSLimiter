@@ -55,11 +55,11 @@ public class MessageHelper {
         double m15 = tps.poll(StatisticWindow.TicksPerSecond.MINUTES_15);
 
         if (!plugin.getConfig().getBoolean(TPS_COLOR_ENABLED_PATH)) return message
-            .replace("%5s%", String.format(Locale.US, "%.1f", s5))
-            .replace("%10s%", String.format(Locale.US, "%.1f", s10))
-            .replace("%1m%", String.format(Locale.US, "%.1f", m1))
-            .replace("%5m%", String.format(Locale.US, "%.1f", m5))
-            .replace("%15m%", String.format(Locale.US, "%.1f", m15));
+            .replace("%5s%", String.format(Locale.US, "%.2f", s5))
+            .replace("%10s%", String.format(Locale.US, "%.2f", s10))
+            .replace("%1m%", String.format(Locale.US, "%.2f", m1))
+            .replace("%5m%", String.format(Locale.US, "%.2f", m5))
+            .replace("%15m%", String.format(Locale.US, "%.2f", m15));
         return message
             .replace("%5s%", getColorFormattedTps(s5))
             .replace("%10s%", getColorFormattedTps(s10))
@@ -76,7 +76,7 @@ public class MessageHelper {
         ServerTickManager tickManager = Bukkit.getServer().getServerTickManager();
         return message
                 .replace("%frozen%", String.valueOf(tickManager.isFrozen()))
-                .replace("%tps%", String.format(Locale.US, "%.1f", tickManager.getTickRate()))
+                .replace("%tps%", String.format(Locale.US, "%.2f", tickManager.getTickRate()))
                 .replace("%stepping%", String.valueOf(tickManager.isStepping()));
     }
 
