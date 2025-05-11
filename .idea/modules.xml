@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TPSLimiter.iml" filepath="$PROJECT_DIR$/TPSLimiter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/TPSLimiter.iml" filepath="$PROJECT_DIR$/.idea/TPSLimiter.iml" />
     </modules>
   </component>
 </project>
